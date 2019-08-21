@@ -1,6 +1,6 @@
 # Simple React Webpack boilerplate
 
-A ready to use simple boilerplate for React Apps.
+Calculating football betting odds using Poisson Distribution.
 
 ## Instructions
 
