@@ -2,33 +2,34 @@
  Project		:	DeepBetBot
  Author			:	Dmitry Blinov, spellabs
  Created date	:	19.08.2019
- Description	:	Получение статитики лиги и списка команд
+ Description	:	Получение статистики лиги и списка команд
  =============================================================== */
 import { CONSTANTS } from './constants';
 
 import axios from 'axios';
 
-
 export function getPrevResultsData(league, team) {
-    var url = CONSTANTS.URL_FOR_CORS + CONSTANTS.URL_FOR_DATA_SOURCE + league.type + '/tournament/' + league.code + '/teams/' + team.code + '/result/';
+    var url = getPathToLeaguePage(league) + '/teams/' + team.code + '/result/';
 
     return getDataByUrl(url);
 };
 
 export function getLeaguesData(league) {
-    let url = CONSTANTS.URL_FOR_CORS + CONSTANTS.URL_FOR_DATA_SOURCE + league.type + '/tournament/' + league.code + '/';
+    let url = getPathToLeaguePage(league) + '/';
 
     return getDataByUrl(url);
 };
 
 export function getTeamsData(league, team) {
-    var url = CONSTANTS.URL_FOR_CORS + CONSTANTS.URL_FOR_DATA_SOURCE + league.type + '/tournament/' + league.code + '/teams/' + team.code + '/tstat/';
+    var url = getPathToLeaguePage(league) + '/teams/' + team.code + '/tstat/';
 
     return getDataByUrl(url);
 };
 
 
-
+function getPathToLeaguePage(league) {
+    return CONSTANTS.URL_FOR_CORS + CONSTANTS.URL_FOR_DATA_SOURCE + league.type + '/tournament/' + league.code;
+}
 
 function getDataByUrl(url) {
     return new Promise((resolve, reject) => {

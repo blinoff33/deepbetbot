@@ -23,32 +23,20 @@ export async function startCalculations(leaguesData, homeTeam, awayTeam, setLoad
     //распарсенные данные по двум командам
     var homeStats = parseTeamsData(homeTeamData.data, true);
     var awayStats = parseTeamsData(awayTeamData.data, false);
-    console.log(homeStats);
-    console.log(awayStats);
 
     //распарсенные данные результатов команд
     var homeTeamResults = parsePrevResultsData(homePrevResultData.data);
     var awayTeamResults = parsePrevResultsData(awayPrevResultData.data);
-    
-    console.log("----------");
-    console.log(homeTeamResults)
-    console.log(awayTeamResults)
-
 
     //ожидаемое кол-во забитых мячей
     var homeTeamXG = (parseFloat(homeStats.avgScoreGoals) + parseFloat(awayStats.avgMissGoals) + parseFloat(leaguesData.homeAvgScoreGoals)) / 3;
-    console.log(homeTeamXG);
     var awayTeamXG = (parseFloat(awayStats.avgScoreGoals) + parseFloat(homeStats.avgMissGoals) + parseFloat(leaguesData.awayAvgScoreGoals)) / 3;
-    console.log(awayTeamXG);
 
     //распределение Пуассона вероятностей забитых мячей
     var teamsScorePoissonDistribution = getTeamsScorePoissonDistribution(homeTeamXG, awayTeamXG);
-    console.log(teamsScorePoissonDistribution);
 
     //финальные вычисления
     var result = getFinalResult(teamsScorePoissonDistribution.homeChanceMatrix, teamsScorePoissonDistribution.awayChanceMatrix, homeTeamXG, awayTeamXG, homeStats, awayStats, homeTeamResults, awayTeamResults);
-
-    console.log(result);
 
     setLoading(false);
 
@@ -87,32 +75,39 @@ function getFinalResult(homeChanceMatrix, awayChanceMatrix, homeTeamXG, awayTeam
                     chance: chance
                 }
             );
+            //ЧЕТ
+            if ((homeChanceMatrix[j].goals + awayChanceMatrix[k].goals) % 2 == 0) evenChance += chance; 
 
-            if ((homeChanceMatrix[j].goals + awayChanceMatrix[k].goals) % 2 == 0) evenChance += chance; //ЧЕТ
+            //МАТРИЦА ДЛЯ ГРАФИКА
+            matrixForDrawingScore.push([homeChanceMatrix[j].goals, awayChanceMatrix[k].goals, chance]);
 
+            //ВЕРОЯТНОСТЬ П1
+            if (homeChanceMatrix[j].goals > awayChanceMatrix[k].goals) chanceHomeWin += chance;
+            //ВЕРОЯТНОСТЬ П2
+            if (homeChanceMatrix[j].goals < awayChanceMatrix[k].goals) chanceAwayWin += chance;
+            //ВЕРОЯТНОСТЬ НИЧЬИ
+            if (homeChanceMatrix[j].goals == awayChanceMatrix[k].goals) chanceFrienshipWin += chance;
 
-            matrixForDrawingScore.push([homeChanceMatrix[j].goals, awayChanceMatrix[k].goals, chance]);//МАТРИЦА ДЯЛ ГРАФИКА
-
-            if (homeChanceMatrix[j].goals > awayChanceMatrix[k].goals) chanceHomeWin += chance;//ВЕРОЯТНОСТЬ П1
-            if (homeChanceMatrix[j].goals < awayChanceMatrix[k].goals) chanceAwayWin += chance;//ВЕРОЯТНОСТЬ П2
-            if (homeChanceMatrix[j].goals == awayChanceMatrix[k].goals) chanceFrienshipWin += chance;//ВЕРОЯТНОСТЬ НИЧЬИ
-
-            if (homeChanceMatrix[j].goals > 0.5) homeTotalB05 += chance; //ТОТАЛ ХОЗЯЕВ
+            //ТОТАЛ ХОЗЯЕВ
+            if (homeChanceMatrix[j].goals > 0.5) homeTotalB05 += chance; 
             if (homeChanceMatrix[j].goals > 1.5) homeTotalB15 += chance;
             if (homeChanceMatrix[j].goals > 2.5) homeTotalB25 += chance;
             if (homeChanceMatrix[j].goals > 3.5) homeTotalB35 += chance;
 
-            if (awayChanceMatrix[k].goals > 0.5) awayTotalB05 += chance; //ТОТАЛ ГОСТЕЙ
+            //ТОТАЛ ГОСТЕЙ
+            if (awayChanceMatrix[k].goals > 0.5) awayTotalB05 += chance; 
             if (awayChanceMatrix[k].goals > 1.5) awayTotalB15 += chance;
             if (awayChanceMatrix[k].goals > 2.5) awayTotalB25 += chance;
             if (awayChanceMatrix[k].goals > 3.5) awayTotalB35 += chance;
 
-            if ((homeChanceMatrix[j].goals + awayChanceMatrix[k].goals) > 0.5) total05B += chance; //ТОТАЛ
+            //ТОТАЛ
+            if ((homeChanceMatrix[j].goals + awayChanceMatrix[k].goals) > 0.5) total05B += chance; 
             if ((homeChanceMatrix[j].goals + awayChanceMatrix[k].goals) > 1.5) total15B += chance;
             if ((homeChanceMatrix[j].goals + awayChanceMatrix[k].goals) > 2.5) total25B += chance;
             if ((homeChanceMatrix[j].goals + awayChanceMatrix[k].goals) > 3.5) total35B += chance;
 
-            if (homeChanceMatrix[j].goals > 0.5 && awayChanceMatrix[k].goals > 0.5) bothScore += chance; //ОБЕ ЗАБЬЮТ
+            //ОБЕ ЗАБЬЮТ
+            if (homeChanceMatrix[j].goals > 0.5 && awayChanceMatrix[k].goals > 0.5) bothScore += chance; 
         }
     }
 
@@ -139,14 +134,28 @@ function getFinalResult(homeChanceMatrix, awayChanceMatrix, homeTeamXG, awayTeam
         evenChance: evenChance,
         homeTeamXG: homeTeamXG,
         awayTeamXG: awayTeamXG,
+        home1XChance: getXChance(chanceHomeWin, chanceFrienshipWin, chanceAwayWin),
+        away1XChance: getXChance(chanceAwayWin, chanceFrienshipWin, chanceHomeWin),
         homeStats: homeStats, 
         awayStats: awayStats,
         homeTeamResults: homeTeamResults,
-        awayTeamResults: awayTeamResults
+        awayTeamResults: awayTeamResults,
+        matrixForDrawingScore: matrixForDrawingScore
     };
 
     return result;
 }
+
+function getXChance(chanceFirstTeamWin, chanceFrienshipWin, chanceSecondTeamWin) {
+      var numerator = (chanceFirstTeamWin + chanceFrienshipWin) * 100;
+      var denominator = chanceSecondTeamWin + 2 * chanceFrienshipWin + chanceFirstTeamWin;
+
+      return denominator ? roundResultsValue(numerator / denominator) : 0;
+  }
+
+  function roundResultsValue(value) {
+    return Math.round(value * 100) / 100
+  }
 
 //получение распределения Пуассона ожидаемого кол-ва забитых мячей 
 function getTeamsScorePoissonDistribution(homeTeamXG, awayTeamXG) {

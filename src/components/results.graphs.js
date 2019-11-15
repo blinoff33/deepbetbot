@@ -2,13 +2,13 @@
  Project		:	DeepBetBot
  Author			:	Dmitry Blinov, spellabs
  Created date	:	20.08.2019
- Description	:	Таблица с результатами
+ Description	:	Графики с результатами
   =============================================================== */
 
 import React, { Component } from 'react';
 import ReactEcharts from 'echarts-for-react';
 
-import { getPieChartOption, getRadarChartOption, getBarChartOption, getLineChartOption } from '../services/drawing';
+import { getPieChartOption, getRadarChartOption, getBarChartOption, getLineChartOption, getScatterChartOption } from '../services/drawing';
 
 export default class ResultsGraphs extends Component {
 
@@ -17,38 +17,15 @@ export default class ResultsGraphs extends Component {
 
   }
 
-
-  get1XChance = () => {
-    var results = this.props.calculationResults;
-
-    if (results && results.chanceHomeWin) {
-      var numerator = (results.chanceHomeWin + results.chanceFrienshipWin) * 100;
-      var denominator = results.chanceAwayWin + 2 * results.chanceFrienshipWin + results.chanceHomeWin;
-
-      return denominator ? this.roundResultsValue(numerator / denominator) : 0;
-    }
-    return 0
-  }
-
-  get2XChance = () => {
-    var results = this.props.calculationResults;
-
-    if (results && results.chanceHomeWin) {
-      var numerator = (results.chanceAwayWin + results.chanceFrienshipWin) * 100;
-      var denominator = results.chanceAwayWin + 2 * results.chanceFrienshipWin + results.chanceHomeWin;
-
-      return denominator ? this.roundResultsValue(numerator / denominator) : 0;
-    }
-
-    return 0
-  };
-
   getDoubleChanceChartDataName() {
     return ["1X", "2X"];
   }
 
   getDoubleChanceChartDatavalue() {
-    return [this.get1XChance(), this.get2XChance()];
+    if (this.checkIfObjectIsEmpty(this.props.calculationResults) || !this.props.calculationResults)
+        return [0, 0];
+
+    return [this.props.calculationResults.home1XChance, this.props.calculationResults.away1XChance];
   }
 
   get1X2ChartDataName() {
@@ -74,10 +51,6 @@ export default class ResultsGraphs extends Component {
     var awgScore = [];
     var xAxisData = [];
 
-    console.log(homeTeamResults);
-    console.log(awayTeamResults);
-
-    
     for (var i = 0; i < homeTeamResults.length; i++) {
       var total = parseFloat(homeTeamResults[i].score[0]) + parseFloat(homeTeamResults[i].score[4]);
       homeSeriesData.push(total); //тотал в матчах хозяев
@@ -96,7 +69,6 @@ export default class ResultsGraphs extends Component {
       awgScore: awgScore
     }
 
-console.log(res);
     return res;
   }
 
@@ -117,12 +89,13 @@ console.log(res);
     console.log(this.props);
     return (<div>
       {/* https://www.npmjs.com/package/echarts-for-react */}
-      <ReactEcharts option={getPieChartOption("Двойной шанс", this.getDoubleChanceChartDataName(), this.getDoubleChanceChartDatavalue())} />
-      <ReactEcharts option={getPieChartOption("1X2", this.get1X2ChartDataName(), this.get1X2ChartDataValue())} />
-      <ReactEcharts option={getRadarChartOption("Статистика", this.getValueFromProps("homeTeam","title"), this.getValueFromProps("awayTeam","title"), this.getValueFromProps("calculationResults","homeStats"), this.getValueFromProps("calculationResults","awayStats"))} />
-      <ReactEcharts option={getBarChartOption(this.getValueFromProps("homeTeam","title") + " Кол-во забитых мячей", "#c23531", this.getValueFromProps("calculationResults","homeChanceMatrix"))} />
-      <ReactEcharts option={getBarChartOption(this.getValueFromProps("awayTeam","title") + " Кол-во забитых мячей", "#547b95", this.getValueFromProps("calculationResults","awayChanceMatrix"))} />
-      <ReactEcharts option={getLineChartOption("Тоталы предыдущих матчей", this.getValueFromProps("homeTeam","title"), this.getValueFromProps("awayTeam","title"), this.getLineChartData())} />
+      <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getPieChartOption("Двойной шанс", this.getDoubleChanceChartDataName(), this.getDoubleChanceChartDatavalue(), true)} />
+      <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getPieChartOption("1X2", this.get1X2ChartDataName(), this.get1X2ChartDataValue(), false)} />
+      <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getRadarChartOption("Статистика", this.getValueFromProps("homeTeam","title"), this.getValueFromProps("awayTeam","title"), this.getValueFromProps("calculationResults","homeStats"), this.getValueFromProps("calculationResults","awayStats"))} />
+      <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getBarChartOption(this.getValueFromProps("homeTeam","title") + " Кол-во забитых мячей", "#c23531", this.getValueFromProps("calculationResults","homeChanceMatrix"))} />
+      <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getBarChartOption(this.getValueFromProps("awayTeam","title") + " Кол-во забитых мячей", "#547b95", this.getValueFromProps("calculationResults","awayChanceMatrix"))} />
+      <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getLineChartOption("Тоталы предыдущих матчей", this.getValueFromProps("homeTeam","title"), this.getValueFromProps("awayTeam","title"), this.getLineChartData())} />
+      <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getScatterChartOption(this.getValueFromProps("homeTeam","title"), this.getValueFromProps("awayTeam","title"), this.getValueFromProps("calculationResults","matrixForDrawingScore"))} />
 
     </div>);
   }

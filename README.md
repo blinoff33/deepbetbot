@@ -1,6 +1,4 @@
-# Simple React Webpack boilerplate
-
-Calculating football betting odds using Poisson Distribution.
+# Calculating football betting odds using Poisson Distribution
 
 ## Instructions
 

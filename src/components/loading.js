@@ -15,8 +15,6 @@ export default class Loading extends Component {
     }
 
     render() {
-        {/* http://jonjaques.github.io/react-loaders/ */ }
-
         return (<>
             {this.props.isLoading && (
                 <div id="blackout">

@@ -6,7 +6,7 @@
  =============================================================== */
 import { CONSTANTS } from './constants';
 
-export function getPieChartOption(title, dataName, dataValue) {
+export function getPieChartOption(title, dataName, dataValue, isDoubleChance) {
     var data = [];
     for (var i = 0; i < dataName.length; i++) {
         var value = dataValue[i];
@@ -17,14 +17,10 @@ export function getPieChartOption(title, dataName, dataValue) {
         }
         data.push(dataItem);
     }
-    console.log(dataName)
-    console.log(dataValue)
 
     var option = {
         backgroundColor: '#fff',
-        color: [
-            '#547b95', '#fec42c', '#c23531'
-        ],
+        color: getPieChartColors(isDoubleChance).reverse(),
         title: {
             text: title,
             x: 'center'
@@ -39,7 +35,7 @@ export function getPieChartOption(title, dataName, dataValue) {
                 type: 'pie',
                 radius: '65%',
                 center: ['50%', '60%'],
-                data: data,
+                data: data.reverse(),
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -65,7 +61,6 @@ export function getRadarChartOption(title, homeTeamName, awayTeamName, homeTeamS
             data: [homeTeamName, awayTeamName]
         },
         radar: {
-            // shape: 'circle',
             name: {
                 textStyle: {
                     color: '#fff',
@@ -95,13 +90,13 @@ export function getRadarChartOption(title, homeTeamName, awayTeamName, homeTeamS
     return option;
 }
 
-export function getBarChartOption (title, color, chanceMatrix) {
+export function getBarChartOption(title, color, chanceMatrix) {
     var option = {
         backgroundColor: '#fff',
         title : {
-      text: title,
-      x:'center'
-      },
+        text: title,
+        x:'center'
+        },
           color: [color],
           tooltip : {
               trigger: 'axis',
@@ -150,6 +145,7 @@ export function getLineChartOption(title, homeTeamName, awayTeamName, seriesData
 
     var option = {
         backgroundColor: '#fff',
+        color: [CONSTANTS.HOME_CHART_COLOR, CONSTANTS.AWAY_CHART_COLOR, CONSTANTS.RESERVE_CHART_COLOR],
        title: {
            text: title
        },
@@ -208,12 +204,112 @@ export function getLineChartOption(title, homeTeamName, awayTeamName, seriesData
                        color: '#f7fff5'
                    }
                },
-               smooth: true
+               smooth: false
            }
        ]
    };
 
    return option;
+}
+
+export function getScatterChartOption(homeTeamName, awayTeamName, matrixForDrawingScore) {
+
+var itemStyle = {
+  normal: {
+      opacity: 0.8,
+      shadowBlur: 10,
+      shadowOffsetX: 0,
+      shadowOffsetY: 0,
+      shadowColor: 'rgba(0, 0, 0, 0.5)'
+  }
+};
+
+var option = {
+  backgroundColor: '#fff',
+  color: [
+      '#dd4444', '#fec42c', '#80F1BE'
+  ],
+  legend: {
+      y: 'top',
+      data: ['Вероятные счета', 'Ничейный результат'],
+      textStyle: {
+          color: '#404a59',
+          fontSize: 16
+      }
+  },
+
+
+  xAxis: {
+      type: 'value',
+      name: homeTeamName,
+      nameTextStyle: {
+          color: '#404a59',
+          fontSize: 14
+      },
+      max: 6,
+      splitLine: {
+          show: true
+      },
+      axisLine: {
+          lineStyle: {
+              color: '#404a59'
+          }
+      }
+  },
+  yAxis: {
+      type: 'value',
+      name: awayTeamName,
+      nameLocation: 'end',
+      max: 6,
+      nameTextStyle: {
+          color: '#404a59',
+          fontSize: 14
+      },
+      axisLine: {
+          lineStyle: {
+              color: '#404a59'
+          }
+      },
+      splitLine: {
+          show: true
+      }
+  },
+  series: [
+      {
+          name: 'Вероятные счета',
+          type: 'scatter',
+          symbolSize: function (data) {
+            return data[2]*5;
+         },
+          itemStyle: itemStyle,
+          data: matrixForDrawingScore
+      },
+      {
+        name: 'Ничейный результат',
+        type:'line',
+        symbolSize: function () {
+            return 0;
+        },
+        stack: 'stack3',
+        data: getBarChartxAxisData(),
+        areaStyle: {
+            normal: {
+                color: '#f7fff5'
+            }
+        },
+        smooth: false
+    }
+  ]
+};
+
+return option;
+}
+
+function getPieChartColors(isDoubleChance) {
+    var colors = [CONSTANTS.HOME_CHART_COLOR, CONSTANTS.RESERVE_CHART_COLOR, CONSTANTS.AWAY_CHART_COLOR];
+    colors =  isDoubleChance ? [CONSTANTS.HOME_CHART_COLOR, CONSTANTS.AWAY_CHART_COLOR] : [CONSTANTS.HOME_CHART_COLOR, CONSTANTS.RESERVE_CHART_COLOR, CONSTANTS.AWAY_CHART_COLOR];
+    
+    return colors;
 }
 
 function getLineChartxAxisData(homeSeriesData) {

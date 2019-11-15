@@ -1,5 +1,7 @@
 import React, { Component } from "react";
+import $ from "jquery";
 
+import Poster from './poster';
 import Loading from './loading';
 import ChoiceLeagues from './choice.leagues';
 import ChoiceTeams from './choice.teams';
@@ -8,6 +10,7 @@ import ResultsGraphs from './results.graphs';
 import { getLeaguesData } from '../services/factory';
 import { parseLeaguesData } from '../services/parsing';
 import { startCalculations } from '../services/calculations';
+import { getNextTotal} from '../services/braining';
 
 import '../styles/App.css';
 
@@ -46,8 +49,7 @@ class App extends Component {
             //добавиляем в даные о лиге инфо об этой лиге (код, название, тип)
             leaguesData.league = league;
             this.setState({ leaguesData: leaguesData, loading: false });
-            console.log(leaguesData);}
-        );
+        });
     }
 
     //изменение домашней команды
@@ -55,7 +57,7 @@ class App extends Component {
         this.onChangeTeam(team, "homeTeam");
     }
 
-    onChangeAwayTeam = (team, stateFieldName) => {
+    onChangeAwayTeam = (team) => {
         this.onChangeTeam(team, "awayTeam");
     }
 
@@ -78,18 +80,51 @@ class App extends Component {
         this.setState({ loading: value });
     }
 
+    downloadAllGraphs = () => {
+        $("canvas").each(function (id, item) {
+            var canvas = item;
+            var image = canvas.toDataURL("image/jpg", 1.0).replace("image/jpg", "image/octet-stream");
+            var link = document.createElement('a');
+            link.download = "result.jpg";
+            link.href = image;
+            link.click();
+        });
+
+        this.downloadResult('result-table');
+        this.downloadResult('poster');
+      };
+      
+      
+    downloadResult = (blockId) => {
+        var node = document.getElementById(blockId);
+      
+        domtoimage.toPng(node)
+            .then(function (dataUrl) {
+                  var link = document.createElement('a');
+                  link.href = dataUrl;
+                  link.download = 'result.jpg';
+                  document.body.appendChild(link);
+                  link.click();
+            })
+            .catch(function (error) {
+                alert('Что-то пошло не так', error)
+            });
+    };
 
     render() {
         return (
             <div>
-                <h1>!</h1>
                 <Loading isLoading={this.state.loading} />
                 <ChoiceLeagues setLeague={this.setLeaguesData} choiceTitle="Choose League" loading={this.state.loading} />
                 <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Home Team" onChangeTeam={this.onChangeHomeTeam} loading={this.state.loading} />
                 <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Away Team" onChangeTeam={this.onChangeAwayTeam} loading={this.state.loading} />
-                <ResultsTable results={this.state.calculationResults} league={this.state.leaguesData.league} homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />
-                <ResultsGraphs calculationResults={this.state.calculationResults} leaguesData={this.state.leaguesData} homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />
 
+                <button onClick={this.downloadAllGraphs}>Download Result</button>
+
+                <ResultsTable results={this.state.calculationResults} league={this.state.leaguesData.league} homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />
+                <Poster calculationResults={this.state.calculationResults}/>
+
+                <ResultsGraphs calculationResults={this.state.calculationResults} leaguesData={this.state.leaguesData} homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />
             </div>
         );
     }

@@ -5,7 +5,6 @@
  Description	:	Парсинг статистики лиги и списка команд
  =============================================================== */
 import $ from "jquery";
-import ResultsGraphs from "../components/results.graphs";
 
 export function parseLeaguesData(response) {
     //команды лиги

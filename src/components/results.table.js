@@ -16,27 +16,6 @@ export default class ResultsTable extends Component {
 
   }
 
-  get1XChance() {
-    if (this.props.results && this.props.results.chanceHomeWin) {
-      var numerator = (this.props.results.chanceHomeWin + this.props.results.chanceFrienshipWin) * 100;
-      var denominator = this.props.results.chanceAwayWin + 2 * this.props.results.chanceFrienshipWin + this.props.results.chanceHomeWin;
-
-      return denominator ? this.roundResultsValue(numerator / denominator) : 0;
-    }
-    return 0
-  }
-
-  get2XChance() {
-    if (this.props.results && this.props.results.chanceHomeWin) {
-      var numerator = (this.props.results.chanceAwayWin + this.props.results.chanceFrienshipWin) * 100;
-      var denominator = this.props.results.chanceAwayWin + 2 * this.props.results.chanceFrienshipWin + this.props.results.chanceHomeWin;
-
-      return denominator ? this.roundResultsValue(numerator / denominator) : 0;
-    }
-
-    return 0
-  }
-
   getProbableScore() {
     if (this.props.results && this.props.results.totalChanceMatrix)
       return this.props.results.totalChanceMatrix.sort(this.compareByChance).filter(this.filterByChance).map((x, idx) => (
@@ -96,8 +75,12 @@ export default class ResultsTable extends Component {
     return a.chance > CONSTANTS.CHANCE_CEILING;
   }
 
+  getValueFromProps(parrentFieldName, childFieldName) {
+    return this.props[parrentFieldName] && this.props[parrentFieldName][childFieldName] ? this.props[parrentFieldName][childFieldName] : "";
+  }
+
   render() {
-    console.log(this.props);
+    
     return (<div>
       <table width="40%" border="1" className="table table-striped table-bordered" id="result-table" style={{ verticalAlign: 'top', backgroundColor: 'white' }}>
         <tbody>
@@ -112,6 +95,13 @@ export default class ResultsTable extends Component {
                 {this.getTitleFromPropsField("homeTeam")} xG90 = {this.getNumberValueFromProps("results", "homeTeamXG")} <br />
 
                 {this.getTitleFromPropsField("awayTeam")} xG90 = {this.getNumberValueFromProps("results", "awayTeamXG")}
+              <br /><br />
+
+                         
+                <b>Угловые</b><br />
+                {this.getTitleFromPropsField("homeTeam")} угл (ср.) = {this.getValueFromProps("results","homeStats") ? this.getValueFromProps("results","homeStats").corners: 0} <br />
+
+                {this.getTitleFromPropsField("awayTeam")} угл (ср.) = {this.getValueFromProps("results","homeStats") ? this.getValueFromProps("results","awayStats").corners: 0}
               <br /><br />
                 <b>Вероятные счета: </b>
               </div>
@@ -130,8 +120,8 @@ export default class ResultsTable extends Component {
 
               <b>Двойной шанс</b><br />
 
-              Команда 1 {this.get1XChance()}%<br />
-              Команда 2 {this.get2XChance()}%<br />
+              Команда 1 {this.getNumberValueFromProps("results", "home1XChance")}%<br />
+              Команда 2 {this.getNumberValueFromProps("results", "away1XChance")}%<br />
               <br />
 
               {this.getTotalsList("Инд. Тотал КОМ1", "homeTotal")}
@@ -143,7 +133,7 @@ export default class ResultsTable extends Component {
               Нет {this.getNotBothScore()}%<br />
               <br />
               <br />
-              { false && (<div><b>Больше прогнозов</b> - на vk.com/deepbetbot </div>)}
+              <div><b>Больше прогнозов</b> - на vk.com/deepbetbot </div>
             </td>
 
           </tr>
