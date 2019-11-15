@@ -14,12 +14,14 @@ export default class Poster extends Component {
         super(props);
     }
 
-    getStyle = () => {
+    getStyle = (logoUrl) => {
         return {
-            width: '800px',
-            height: '800px',
+            width: '600px',
+            height: '600px',
             marginTop: '200px',
-            verticalAlign: 'middle'
+            verticalAlign: 'middle',
+            backgroundImage: 'url("'+logoUrl+'")',
+            backgroundSize: 'cover'
         }
     }
 
@@ -29,8 +31,8 @@ export default class Poster extends Component {
             {
                 this.props && this.props.calculationResults && (this.props.calculationResults.homeStats != undefined) && (
                     <div id="poster" style={{ backgroundColor: 'white', textAlign: 'center', height: '1200px' }}>
-                        <img src={this.props.calculationResults.homeStats != undefined ? CONSTANTS.URL_FOR_CORS + this.props.calculationResults.homeStats.logo : ''} style={this.getStyle()}></img>
-                        <img src={this.props.calculationResults.awayStats != undefined ? CONSTANTS.URL_FOR_CORS + this.props.calculationResults.awayStats.logo : ''} style={this.getStyle()}></img>
+                        <img src={this.props.calculationResults.homeStats != undefined ? CONSTANTS.URL_FOR_CORS + this.props.calculationResults.homeStats.logo : ''} style={this.getStyle(this.props.calculationResults.homeStats.logo)}></img>
+                        <img src={this.props.calculationResults.awayStats != undefined ? CONSTANTS.URL_FOR_CORS + this.props.calculationResults.awayStats.logo : ''} style={this.getStyle(this.props.calculationResults.awayStats.logo)}></img>
                     </div>)
 
             }

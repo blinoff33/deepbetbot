@@ -113,15 +113,16 @@ class App extends Component {
 
     render() {
         return (
-            <div>
+            <div className = "deepbetbot-card">
                 <Loading isLoading={this.state.loading} />
+                
                 <ChoiceLeagues setLeague={this.setLeaguesData} choiceTitle="Choose League" loading={this.state.loading} />
                 <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Home Team" onChangeTeam={this.onChangeHomeTeam} loading={this.state.loading} />
                 <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Away Team" onChangeTeam={this.onChangeAwayTeam} loading={this.state.loading} />
-
                 <button onClick={this.downloadAllGraphs}>Download Result</button>
-
+                <br />
                 <ResultsTable results={this.state.calculationResults} league={this.state.leaguesData.league} homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />
+                
                 <Poster calculationResults={this.state.calculationResults}/>
 
                 <ResultsGraphs calculationResults={this.state.calculationResults} leaguesData={this.state.leaguesData} homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />

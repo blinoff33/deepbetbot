@@ -81,8 +81,8 @@ export default class ResultsTable extends Component {
 
   render() {
     
-    return (<div>
-      <table width="40%" border="1" className="table table-striped table-bordered" id="result-table" style={{ verticalAlign: 'top', backgroundColor: 'white' }}>
+    return (<div style={{display: "inline-block"}}>
+      <table width="1000px" border="1" className="table table-striped table-bordered" id="result-table" style={{ verticalAlign: 'top', backgroundColor: 'white', textAlign: 'left' }}>
         <tbody>
           <tr>
             <td style={{ width: '50%' }}>

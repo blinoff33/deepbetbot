@@ -87,7 +87,7 @@ export default class ResultsGraphs extends Component {
 
   render() {
     console.log(this.props);
-    return (<div>
+    return (<div style={{display: "inline-block"}}>
       {/* https://www.npmjs.com/package/echarts-for-react */}
       <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getPieChartOption("Двойной шанс", this.getDoubleChanceChartDataName(), this.getDoubleChanceChartDatavalue(), true)} />
       <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getPieChartOption("1X2", this.get1X2ChartDataName(), this.get1X2ChartDataValue(), false)} />
