@@ -1,6 +1,6 @@
 /* =============================================================
  Project		:	DeepBetBot
- Author			:	Dmitry Blinov, spellabs
+ Author			:	Dmitry Blinov
  Created date	:	09.10.2019
  Description	:	Работа нейроной сети brain.js
  =============================================================== */

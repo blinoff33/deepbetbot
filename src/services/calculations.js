@@ -1,6 +1,6 @@
 /* =============================================================
  Project		:	DeepBetBot
- Author			:	Dmitry Blinov, spellabs
+ Author			:	Dmitry Blinov
  Created date	:	19.08.2019
  Description	:	Вычисления
  =============================================================== */
