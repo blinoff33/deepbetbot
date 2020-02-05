@@ -15,7 +15,7 @@ $primary-color: #000;
 #blackout {
     width:100%;
     height:100%; 
-    position: absolute;
+    position: fixed;
     left:0; 
     top:0;
     background: #BCBCBC;
@@ -24,4 +24,18 @@ $primary-color: #000;
 
 .deepbetbot-card {
     display: inline-block;    
+}
+
+.charts-items {
+  display: inline-block;
+  width: calc(100vw * 0.9) !important;
+  height: calc(100vh * 0.9) !important;
+}
+
+.poster-item {
+  width: calc(100vw * 0.3) !important;
+  height: calc(100vw * 0.3) !important;
+  margin-top: 10px;
+  vertical-align: middle;
+  background-size: cover;
 }

@@ -86,16 +86,15 @@ export default class ResultsGraphs extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (<div style={{display: "inline-block"}}>
       {/* https://www.npmjs.com/package/echarts-for-react */}
-      <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getPieChartOption("Двойной шанс", this.getDoubleChanceChartDataName(), this.getDoubleChanceChartDatavalue(), true)} />
-      <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getPieChartOption("1X2", this.get1X2ChartDataName(), this.get1X2ChartDataValue(), false)} />
-      <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getRadarChartOption("Статистика", this.getValueFromProps("homeTeam","title"), this.getValueFromProps("awayTeam","title"), this.getValueFromProps("calculationResults","homeStats"), this.getValueFromProps("calculationResults","awayStats"))} />
-      <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getBarChartOption(this.getValueFromProps("homeTeam","title") + " Кол-во забитых мячей", "#c23531", this.getValueFromProps("calculationResults","homeChanceMatrix"))} />
-      <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getBarChartOption(this.getValueFromProps("awayTeam","title") + " Кол-во забитых мячей", "#547b95", this.getValueFromProps("calculationResults","awayChanceMatrix"))} />
-      <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getLineChartOption("Тоталы предыдущих матчей", this.getValueFromProps("homeTeam","title"), this.getValueFromProps("awayTeam","title"), this.getLineChartData())} />
-      <ReactEcharts style={{height: '1000px', width: '1000px'}} option={getScatterChartOption(this.getValueFromProps("homeTeam","title"), this.getValueFromProps("awayTeam","title"), this.getValueFromProps("calculationResults","matrixForDrawingScore"))} />
+      <ReactEcharts className="charts-items" option={getPieChartOption("Двойной шанс", this.getDoubleChanceChartDataName(), this.getDoubleChanceChartDatavalue(), true)} />
+      <ReactEcharts className="charts-items" option={getPieChartOption("1X2", this.get1X2ChartDataName(), this.get1X2ChartDataValue(), false)} />
+      <ReactEcharts className="charts-items" option={getRadarChartOption("Статистика", this.getValueFromProps("homeTeam","title"), this.getValueFromProps("awayTeam","title"), this.getValueFromProps("calculationResults","homeStats"), this.getValueFromProps("calculationResults","awayStats"))} />
+      <ReactEcharts className="charts-items" option={getBarChartOption(this.getValueFromProps("homeTeam","title") + " Кол-во забитых мячей", "#c23531", this.getValueFromProps("calculationResults","homeChanceMatrix"))} />
+      <ReactEcharts className="charts-items" option={getBarChartOption(this.getValueFromProps("awayTeam","title") + " Кол-во забитых мячей", "#547b95", this.getValueFromProps("calculationResults","awayChanceMatrix"))} />
+      <ReactEcharts className="charts-items" option={getLineChartOption("Тоталы предыдущих матчей", this.getValueFromProps("homeTeam","title"), this.getValueFromProps("awayTeam","title"), this.getLineChartData())} />
+      <ReactEcharts className="charts-items" option={getScatterChartOption(this.getValueFromProps("homeTeam","title"), this.getValueFromProps("awayTeam","title"), this.getValueFromProps("calculationResults","matrixForDrawingScore"))} />
 
     </div>);
   }

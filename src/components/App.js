@@ -94,6 +94,14 @@ class App extends Component {
         this.downloadResult('poster');
     };
 
+    copyDivInnerText(divId) {
+        var copyText = document.getElementById(divId);
+    
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+      
+        document.execCommand("copy");
+      };
 
     downloadResult = (blockId) => {
         var node = document.getElementById(blockId);
@@ -112,6 +120,8 @@ class App extends Component {
     };
 
     render() {
+        const showResult = Object.entries(this.state.homeTeam).length === 0 || Object.entries(this.state.awayTeam).length === 0 || this.state.loading;
+
         return (
             <div className="deepbetbot-card">
                 <Loading isLoading={this.state.loading} />
@@ -119,15 +129,25 @@ class App extends Component {
                 <ChoiceLeagues setLeague={this.setLeaguesData} choiceTitle="Choose League" loading={this.state.loading} />
                 <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Home Team" onChangeTeam={this.onChangeHomeTeam} loading={this.state.loading} />
                 <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Away Team" onChangeTeam={this.onChangeAwayTeam} loading={this.state.loading} />
-                <Button onClick={this.downloadAllGraphs} variant="contained" color="primary">
-                    Save
-                </Button>
-                <br />
-                <ResultsTable results={this.state.calculationResults} league={this.state.leaguesData.league} homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />
-
                 <Poster calculationResults={this.state.calculationResults} />
+                
+                <Button onClick={this.downloadAllGraphs} variant="contained" color="primary" disabled={showResult}>
+                    Download
+                </Button>
+                <Button onClick={() => this.copyDivInnerText("xg90result")} variant="contained" color="primary" disabled={showResult}>
+                 Copy xG90
+               </Button>
+               <Button variant="contained" color="primary" disabled={showResult}>
+                 Copy All
+               </Button>
+                <br />
+               { !showResult && <>
+                <ResultsTable results={this.state.calculationResults} league={this.state.leaguesData.league} homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />
+                <br />
 
                 <ResultsGraphs calculationResults={this.state.calculationResults} leaguesData={this.state.leaguesData} homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />
+               </>
+               }
             </div>
         );
     }

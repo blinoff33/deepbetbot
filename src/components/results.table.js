@@ -79,12 +79,18 @@ export default class ResultsTable extends Component {
     return this.props[parrentFieldName] && this.props[parrentFieldName][childFieldName] ? this.props[parrentFieldName][childFieldName] : "";
   }
 
+
+
   render() {
-    
+    var xg90text = this.getTitleFromPropsField("league") + "\n" +
+    this.getTitleFromPropsField("homeTeam") + " - " + this.getTitleFromPropsField("awayTeam") + "\n"+
+    this.getTitleFromPropsField("homeTeam") +" xG90 = " +this.getNumberValueFromProps("results", "homeTeamXG") + "\n" +
+            this.getTitleFromPropsField("awayTeam") +" xG90 = " +this.getNumberValueFromProps("results", "awayTeamXG");
+
     return (<div style={{display: "inline-block"}}>
-      <table width="1000px" border="1" className="table table-striped table-bordered" id="result-table" style={{ verticalAlign: 'top', backgroundColor: 'white', textAlign: 'left' }}>
+      <table border="1" className="table table-striped table-bordered" id="result-table" style={{ verticalAlign: 'top', backgroundColor: 'white', textAlign: 'left' }}>
         <tbody>
-          <tr>
+          <tr style={{verticalAlign: "top"}}>
             <td style={{ width: '50%' }}>
 
               <b>{this.getTitleFromPropsField("league")}</b><br />
@@ -94,15 +100,15 @@ export default class ResultsTable extends Component {
                 <b>xG90 с учетом GD-xGD</b><br />
                 {this.getTitleFromPropsField("homeTeam")} xG90 = {this.getNumberValueFromProps("results", "homeTeamXG")} <br />
 
-                {this.getTitleFromPropsField("awayTeam")} xG90 = {this.getNumberValueFromProps("results", "awayTeamXG")}
+                {this.getTitleFromPropsField("awayTeam")} xG90 = {this.getNumberValueFromProps("results", "awayTeamXG")} <br />
               <br /><br />
 
                          
-                <b>Угловые</b><br />
+                {/* <b>Угловые</b><br />
                 {this.getTitleFromPropsField("homeTeam")} угл (ср.) = {this.getValueFromProps("results","homeStats") ? this.getValueFromProps("results","homeStats").corners: 0} <br />
 
                 {this.getTitleFromPropsField("awayTeam")} угл (ср.) = {this.getValueFromProps("results","homeStats") ? this.getValueFromProps("results","awayStats").corners: 0}
-              <br /><br />
+              <br /><br /> */}
                 <b>Вероятные счета: </b>
               </div>
 
@@ -134,6 +140,7 @@ export default class ResultsTable extends Component {
               <br />
               <br />
               <div><b>Больше прогнозов</b> - на vk.com/deepbetbot </div>
+              <textarea name="sdf" readOnly value={xg90text} style={{width: 0, height: 0}} id="xg90result"/> 
             </td>
 
           </tr>
