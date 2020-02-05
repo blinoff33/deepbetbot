@@ -6,6 +6,7 @@
   =============================================================== */
 
 import React, { Component } from 'react';
+import Select from 'react-select';
 
 export default class ChoiceTeams extends Component {
 
@@ -13,17 +14,28 @@ export default class ChoiceTeams extends Component {
         super(props);
     }
 
-    onChangeTeam = (event) => {
-        let teamsCode = event.target.value;
+    onChangeTeam = (selectedOption) => {
+        let teamsCode = selectedOption.value;
         let team = this.props.teams.find(team => team.code == teamsCode);
 
         this.props.onChangeTeam(team);
-    }
+    };
+
+    getTeamsSelectOptions = () => {
+        var options = [{ value: '-', label: '-' }];
+        if (this.props.teams) {
+            for (var i = 0; i < this.props.teams.length; i++) {
+                var l = this.props.teams[i];
+                options.push({ value: l.code, label: l.title });
+            }
+        }
+        return options;
+    };
 
     render() {
 
         return (<div>
-            {this.props.choiceTitle}
+            {/* {this.props.choiceTitle}
             <select defaultValue=""
                 name="choice-teams"
                 onChange={this.onChangeTeam}
@@ -39,7 +51,14 @@ export default class ChoiceTeams extends Component {
                     )
                 })
                 }
-            </select>
+            </select> */}
+            <Select
+                options={this.getTeamsSelectOptions()}
+                placeholder={this.props.choiceTitle}
+                onChange={this.onChangeTeam}
+                isDisabled={this.props.loading}
+                isSearchable={true}
+            />
         </div>);
     }
 }

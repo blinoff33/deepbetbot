@@ -7,6 +7,7 @@
 
 import React, { Component } from 'react';
 import { CONSTANTS } from '../services/constants';
+import Select from 'react-select';
 
 export default class ChoiceLeagues extends Component {
 
@@ -14,33 +15,33 @@ export default class ChoiceLeagues extends Component {
         super(props);
      }
 
-    onChangeLeague = (event) => {
-        let leaguesCode = event.target.value;
+    onChangeLeague = (selectedOption) => {
+        let leaguesCode = selectedOption.value;
         let league = CONSTANTS.LEAGUES.find(league => league.code == leaguesCode);
 
         this.props.setLeague(league);
-    }
+    };
+
+    getLeaguesSelectOptions = () => {
+        var options = [{value: '-', label: '-'}]; 
+        for (var i=0; i < CONSTANTS.LEAGUES.length; i++)
+        {
+            var l = CONSTANTS.LEAGUES[i];
+            options.push({value: l.code, label: l.title});
+        }
+        return options;
+    };
 
     render() {
-
+          
         return (<div>
-            {this.props.choiceTitle}
-            <select defaultValue=""
-                name="choice-league"
-                onChange={this.onChangeLeague}
-                disabled={this.props.loading}>
-                <option key={0} value={0} >
-                    -
-              </option>
-                {CONSTANTS.LEAGUES.map((league, index) => {
-                    return (
-                        <option key={index} value={league.code}>
-                            {league.title}
-                        </option>
-                    )
-                })
-                }
-            </select>
+            <Select
+        options={this.getLeaguesSelectOptions()}
+        placeholder={this.props.choiceTitle}
+        onChange={this.onChangeLeague}
+        isDisabled={this.props.loading}
+        isSearchable={true}
+      />
         </div>);
     }
 }

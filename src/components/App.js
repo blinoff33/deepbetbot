@@ -10,8 +10,8 @@ import ResultsGraphs from './results.graphs';
 import { getLeaguesData } from '../services/factory';
 import { parseLeaguesData } from '../services/parsing';
 import { startCalculations } from '../services/calculations';
-import { getNextTotal} from '../services/braining';
-
+import { getNextTotal } from '../services/braining';
+import Button from '@material-ui/core/Button';
 import '../styles/App.css';
 
 class App extends Component {
@@ -92,19 +92,19 @@ class App extends Component {
 
         this.downloadResult('result-table');
         this.downloadResult('poster');
-      };
-      
-      
+    };
+
+
     downloadResult = (blockId) => {
         var node = document.getElementById(blockId);
-      
+
         domtoimage.toPng(node)
             .then(function (dataUrl) {
-                  var link = document.createElement('a');
-                  link.href = dataUrl;
-                  link.download = 'result.jpg';
-                  document.body.appendChild(link);
-                  link.click();
+                var link = document.createElement('a');
+                link.href = dataUrl;
+                link.download = 'result.jpg';
+                document.body.appendChild(link);
+                link.click();
             })
             .catch(function (error) {
                 alert('Что-то пошло не так', error)
@@ -113,17 +113,19 @@ class App extends Component {
 
     render() {
         return (
-            <div className = "deepbetbot-card">
+            <div className="deepbetbot-card">
                 <Loading isLoading={this.state.loading} />
-                
+               
                 <ChoiceLeagues setLeague={this.setLeaguesData} choiceTitle="Choose League" loading={this.state.loading} />
                 <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Home Team" onChangeTeam={this.onChangeHomeTeam} loading={this.state.loading} />
                 <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Away Team" onChangeTeam={this.onChangeAwayTeam} loading={this.state.loading} />
-                <button onClick={this.downloadAllGraphs}>Download Result</button>
+                <Button onClick={this.downloadAllGraphs} variant="contained" color="primary">
+                    Save
+                </Button>
                 <br />
                 <ResultsTable results={this.state.calculationResults} league={this.state.leaguesData.league} homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />
-                
-                <Poster calculationResults={this.state.calculationResults}/>
+
+                <Poster calculationResults={this.state.calculationResults} />
 
                 <ResultsGraphs calculationResults={this.state.calculationResults} leaguesData={this.state.leaguesData} homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />
             </div>
