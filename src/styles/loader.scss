@@ -39,3 +39,8 @@ $primary-color: #000;
   vertical-align: middle;
   background-size: cover;
 }
+
+.control {
+  width: calc(100vw*0.9) !important;
+  margin: 10px;
+}

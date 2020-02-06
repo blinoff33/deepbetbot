@@ -23,7 +23,7 @@ export default class ChoiceLeagues extends Component {
     };
 
     getLeaguesSelectOptions = () => {
-        var options = [{value: '-', label: '-'}]; 
+        var options = [{value: null, label: '-'}]; 
         for (var i=0; i < CONSTANTS.LEAGUES.length; i++)
         {
             var l = CONSTANTS.LEAGUES[i];

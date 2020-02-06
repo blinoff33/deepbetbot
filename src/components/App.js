@@ -12,6 +12,7 @@ import { parseLeaguesData } from '../services/parsing';
 import { startCalculations } from '../services/calculations';
 import { getNextTotal } from '../services/braining';
 import Button from '@material-ui/core/Button';
+import domtoimage from 'dom-to-image';
 import '../styles/App.css';
 
 class App extends Component {
@@ -125,10 +126,11 @@ class App extends Component {
         return (
             <div className="deepbetbot-card">
                 <Loading isLoading={this.state.loading} />
-               
+               <div className="control">
                 <ChoiceLeagues setLeague={this.setLeaguesData} choiceTitle="Choose League" loading={this.state.loading} />
                 <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Home Team" onChangeTeam={this.onChangeHomeTeam} loading={this.state.loading} />
                 <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Away Team" onChangeTeam={this.onChangeAwayTeam} loading={this.state.loading} />
+                </div>
                 <Poster calculationResults={this.state.calculationResults} />
                 
                 <Button onClick={this.downloadAllGraphs} variant="contained" color="primary" disabled={showResult}>
