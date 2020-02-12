@@ -14,6 +14,9 @@ import { getNextTotal } from '../services/braining';
 import Button from '@material-ui/core/Button';
 import domtoimage from 'dom-to-image';
 import '../styles/App.css';
+import TextField from '@material-ui/core/TextField';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class App extends Component {
     constructor(props) {
@@ -24,10 +27,18 @@ class App extends Component {
             leaguesData: {},
             homeTeam: {},
             awayTeam: {},
-            calculationResults: {}
+            calculationResults: {},
+            betData: {
+                p1ByBet: 0,
+                friendshipByBet: 0,
+                p2ByBet: 0
+            },
+            successCopy: false
         };
 
     }
+    showPoster = false;
+    showGraphs = true;
 
     //задает лигу
     setLeaguesData = (league) => {
@@ -70,11 +81,12 @@ class App extends Component {
                 return;
             };
 
-            this.setState({ [stateFieldName]: team, loading: false }, async () => {
-                var calculationResults = await startCalculations(this.state.leaguesData, this.state.homeTeam, this.state.awayTeam, this.setLoading);
-                this.setState({ calculationResults: calculationResults });
-            });
+            this.setState({ [stateFieldName]: team, loading: false });
         });
+    }
+    startCalc = async () => {
+        var calculationResults = await startCalculations(this.state.leaguesData, this.state.homeTeam, this.state.awayTeam, this.setLoading);
+        this.setState({ calculationResults: calculationResults });
     }
 
     setLoading = (value) => {
@@ -97,12 +109,12 @@ class App extends Component {
 
     copyDivInnerText(divId) {
         var copyText = document.getElementById(divId);
-    
+
         copyText.select();
         copyText.setSelectionRange(0, 99999);
-      
+
         document.execCommand("copy");
-      };
+    };
 
     downloadResult = (blockId) => {
         var node = document.getElementById(blockId);
@@ -120,36 +132,97 @@ class App extends Component {
             });
     };
 
+    _handlePByBetChange = (e, pFieldName) => {
+        var betData = this.state.betData;
+        betData[pFieldName] = e.target.value;
+
+        this.setState({
+            betData: betData
+        });
+    };
+
+    successCopyClose = () => this.setState({ successCopy: false });
+
     render() {
-        const showResult = Object.entries(this.state.homeTeam).length === 0 || Object.entries(this.state.awayTeam).length === 0 || this.state.loading;
+        const emptyResult = Object.entries(this.state.homeTeam).length === 0 || Object.entries(this.state.awayTeam).length === 0 || this.state.loading;
 
         return (
-            <div className="deepbetbot-card">
-                <Loading isLoading={this.state.loading} />
-               <div className="control">
-                <ChoiceLeagues setLeague={this.setLeaguesData} choiceTitle="Choose League" loading={this.state.loading} />
-                <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Home Team" onChangeTeam={this.onChangeHomeTeam} loading={this.state.loading} />
-                <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Away Team" onChangeTeam={this.onChangeAwayTeam} loading={this.state.loading} />
-                </div>
-                <Poster calculationResults={this.state.calculationResults} />
-                
-                <Button onClick={this.downloadAllGraphs} variant="contained" color="primary" disabled={showResult}>
-                    Download
-                </Button>
-                <Button onClick={() => this.copyDivInnerText("xg90result")} variant="contained" color="primary" disabled={showResult}>
-                 Copy xG90
-               </Button>
-               <Button variant="contained" color="primary" disabled={showResult}>
-                 Copy All
-               </Button>
-                <br />
-               { !showResult && <>
-                <ResultsTable results={this.state.calculationResults} league={this.state.leaguesData.league} homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />
-                <br />
+            <div className={"deepbetbot-card"}>
+                <Loading open={this.state.successCopy} onClose={this.successCopyClose} autoHideDuration={1000} alertText="Текст успешно скопирован!" />
+                <Backdrop open={this.state.loading}>
+                    <CircularProgress color="inherit" />
+                </Backdrop>
 
-                <ResultsGraphs calculationResults={this.state.calculationResults} leaguesData={this.state.leaguesData} homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />
-               </>
-               }
+                <div className="control">
+                    <ChoiceLeagues setLeague={this.setLeaguesData} choiceTitle="Choose League" loading={this.state.loading} />
+                    <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Home Team" onChangeTeam={this.onChangeHomeTeam} loading={this.state.loading} />
+                    <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Away Team" onChangeTeam={this.onChangeAwayTeam} loading={this.state.loading} />
+
+                    <div className="button-wrapper default-margin">
+                        <TextField
+                            id="2"
+                            label="П1"
+                            type="number"
+                            value={this.state.betData.p1ByBet}
+                            onChange={(e) => this._handlePByBetChange(e, "p1ByBet")}
+                            InputLabelProps={{
+                                shrink: true
+                            }}
+                            variant="outlined" />
+                    </div>
+                    <div className="button-wrapper default-margin">
+                        <TextField
+                            id="4"
+                            label="Ничья"
+                            type="number"
+                            value={this.state.betData.friendshipByBet}
+                            onChange={(e) => this._handlePByBetChange(e, "friendshipByBet")}
+                            InputLabelProps={{
+                                shrink: true
+                            }}
+                            variant="outlined" />
+                    </div>
+                    <div className="button-wrapper default-margin">
+                        <TextField
+                            id="3"
+                            label="П2"
+                            type="number"
+                            value={this.state.betData.p2ByBet}
+                            onChange={(e) => this._handlePByBetChange(e, "p2ByBet")}
+                            InputLabelProps={{
+                                shrink: true
+                            }}
+                            variant="outlined" />
+                    </div>
+
+                </div>
+                {this.showPoster && <Poster calculationResults={this.state.calculationResults} />}
+
+                <div className="button-wrapper default-margin">
+                    <Button onClick={this.downloadAllGraphs} variant="contained" color="primary" disabled={emptyResult}>
+                        Download
+                    </Button>
+                </div>
+                <div className="button-wrapper default-margin">
+                    <Button onClick={() => { this.copyDivInnerText("xg90result"); this.setState({ successCopy: true }); }} variant="contained" color="primary" disabled={emptyResult}>
+                        Copy xG90
+                    </Button>
+                </div>
+                <div className="button-wrapper default-margin">
+                    <Button onClick={() => this.startCalc()} variant="contained" color="primary" disabled={emptyResult}>
+                        Start Calc
+                    </Button>
+                </div>
+                <br />
+                {
+                    !emptyResult &&
+                    <>
+                        <ResultsTable results={this.state.calculationResults} league={this.state.leaguesData.league} homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} betData={this.state.betData} />
+                        <br />
+
+                        {this.showGraphs && <ResultsGraphs calculationResults={this.state.calculationResults} leaguesData={this.state.leaguesData} homeTeam={this.state.homeTeam} awayTeam={this.state.awayTeam} />}
+                    </>
+                }
             </div>
         );
     }

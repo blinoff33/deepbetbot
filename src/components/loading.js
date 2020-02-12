@@ -6,7 +6,12 @@
   =============================================================== */
 
 import React, { Component } from 'react';
-import Loader from 'react-loaders';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 export default class Loading extends Component {
 
@@ -16,11 +21,11 @@ export default class Loading extends Component {
 
     render() {
         return (<>
-            {this.props.isLoading && (
-                <div id="blackout">
-                    <Loader type="cube-transition" />
-                </div>
-            )}
+            <Snackbar open={this.props.open} onClose={this.props.onClose} autoHideDuration={this.props.autoHideDuration} >
+                    <Alert onClose={this.props.onClose} severity="success">
+                        {this.props.alertText}
+                    </Alert>
+            </Snackbar>
         </>
         );
     }

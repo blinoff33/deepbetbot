@@ -34,7 +34,7 @@ export default class ChoiceLeagues extends Component {
 
     render() {
           
-        return (<div>
+        return (<div className="default-margin">
             <Select
         options={this.getLeaguesSelectOptions()}
         placeholder={this.props.choiceTitle}

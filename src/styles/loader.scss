@@ -10,6 +10,7 @@ $primary-color: #000;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index:11
 }
 
 #blackout {
@@ -19,7 +20,7 @@ $primary-color: #000;
     left:0; 
     top:0;
     background: #BCBCBC;
-    opacity: 0.7;
+    opacity: 0.1;
     z-index:10}
 
 .deepbetbot-card {
@@ -43,4 +44,16 @@ $primary-color: #000;
 .control {
   width: calc(100vw*0.9) !important;
   margin: 10px;
+}
+
+.default-margin {
+  margin: 10px;
+}
+
+.button-wrapper {
+  display: inline-block;  
+}
+
+.MuiBackdrop-root {
+  z-index: 1 !important;
 }

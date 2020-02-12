@@ -43,6 +43,16 @@ export async function startCalculations(leaguesData, homeTeam, awayTeam, setLoad
     return result;
 }
 
+//получение мат ожидания
+export function getExpectedValue(pByBet, chance) {
+    return pByBet * chance - 100;
+}
+
+//округление
+export function roundValue(value) {
+    return Math.round(value * 100) / 100
+}
+
 //расчет основных результатов
 function getFinalResult(homeChanceMatrix, awayChanceMatrix, homeTeamXG, awayTeamXG, homeStats, awayStats, homeTeamResults, awayTeamResults) {
     var totalChanceMatrix = [];

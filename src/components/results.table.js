@@ -8,12 +8,23 @@
 import React, { Component } from 'react';
 
 import { CONSTANTS } from '../services/constants';
+import { getTextForCopying } from '../services/texting';
 
 export default class ResultsTable extends Component {
 
   constructor(props) {
     super(props);
 
+  }
+
+  getTextProbableScore(results) {
+    var text = "Вероятные счета:"  + CONSTANTS.EMOJI.CUBE + "\n";
+    if (results && results.totalChanceMatrix)
+      results.totalChanceMatrix.sort(this.compareByChance).filter(this.filterByChance).map((x) => (
+        text += x.goalsHome + ":" + x.goalsaway + " Вероятность: " + x.chance + "%" + "\n"
+      ));
+
+      return text;
   }
 
   getProbableScore() {
@@ -50,7 +61,7 @@ export default class ResultsTable extends Component {
   }
 
   getTitleFromPropsField(propsFieldName) {
-      return this.props[propsFieldName] ? this.props[propsFieldName].title : "";
+    return this.props[propsFieldName] ? this.props[propsFieldName].title : "";
   }
 
   getNumberValueFromProps(parrentFieldName, childFieldName) {
@@ -82,15 +93,22 @@ export default class ResultsTable extends Component {
 
 
   render() {
-    var xg90text = this.getTitleFromPropsField("league") + "\n" +
-    this.getTitleFromPropsField("homeTeam") + " - " + this.getTitleFromPropsField("awayTeam") + "\n"+
-    this.getTitleFromPropsField("homeTeam") +" xG90 = " +this.getNumberValueFromProps("results", "homeTeamXG") + "\n" +
-            this.getTitleFromPropsField("awayTeam") +" xG90 = " +this.getNumberValueFromProps("results", "awayTeamXG");
+    var textForCopying = getTextForCopying(this.getTitleFromPropsField("league"), this.getTitleFromPropsField("homeTeam"), this.getTitleFromPropsField("awayTeam"),
+      this.getNumberValueFromProps("results", "homeTeamXG"), this.getNumberValueFromProps("results", "awayTeamXG"),
+      this.getNumberValueFromProps("results", "chanceHomeWin"), this.getNumberValueFromProps("results", "chanceFrienshipWin"), this.getNumberValueFromProps("results", "chanceAwayWin"),
+      this.props.betData, this.getNumberValueFromProps("results", "bothScore"), this.getNotBothScore(), this.getTextProbableScore(this.props.results));
 
-    return (<div style={{display: "inline-block"}}>
+    return (<div style={{ display: "inline-block" }} className="default-margin">
+      <textarea
+        name="text-for-copying"
+        id="xg90result"
+        readOnly
+        value={textForCopying}
+        style={{ width: '98%', height: '335px', border: 0 }}
+      /> <br />
       <table border="1" className="table table-striped table-bordered" id="result-table" style={{ verticalAlign: 'top', backgroundColor: 'white', textAlign: 'left' }}>
         <tbody>
-          <tr style={{verticalAlign: "top"}}>
+          <tr style={{ verticalAlign: "top" }}>
             <td style={{ width: '50%' }}>
 
               <b>{this.getTitleFromPropsField("league")}</b><br />
@@ -101,9 +119,10 @@ export default class ResultsTable extends Component {
                 {this.getTitleFromPropsField("homeTeam")} xG90 = {this.getNumberValueFromProps("results", "homeTeamXG")} <br />
 
                 {this.getTitleFromPropsField("awayTeam")} xG90 = {this.getNumberValueFromProps("results", "awayTeamXG")} <br />
-              <br /><br />
+                <br /><br />
 
-                         
+                <br />
+
                 {/* <b>Угловые</b><br />
                 {this.getTitleFromPropsField("homeTeam")} угл (ср.) = {this.getValueFromProps("results","homeStats") ? this.getValueFromProps("results","homeStats").corners: 0} <br />
 
@@ -140,7 +159,7 @@ export default class ResultsTable extends Component {
               <br />
               <br />
               <div><b>Больше прогнозов</b> - на vk.com/deepbetbot </div>
-              <textarea name="sdf" readOnly value={xg90text} style={{width: 0, height: 0}} id="xg90result"/> 
+
             </td>
 
           </tr>

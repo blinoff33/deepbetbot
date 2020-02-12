@@ -34,25 +34,8 @@ export default class ChoiceTeams extends Component {
 
     render() {
 
-        return (<div>
-            {/* {this.props.choiceTitle}
-            <select defaultValue=""
-                name="choice-teams"
-                onChange={this.onChangeTeam}
-                disabled={this.props.loading}>
-                <option key={0} value={0}>
-                    -
-              </option>
-                {this.props.teams && this.props.teams.map((team, index) => {
-                    return (
-                        <option key={index} value={team.code}>
-                            {team.title}
-                        </option>
-                    )
-                })
-                }
-            </select> */}
-            <Select
+        return (<div className="default-margin">
+             <Select
                 options={this.getTeamsSelectOptions()}
                 placeholder={this.props.choiceTitle}
                 onChange={this.onChangeTeam}
