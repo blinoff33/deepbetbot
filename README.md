@@ -5,3 +5,5 @@
 * Clone the repo
 * Run `npm install`
 * Run `npm start`
+
+![Пример работы](/src/images/deepbetbot.png)
