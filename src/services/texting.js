@@ -23,6 +23,7 @@ export function getTextForCopying(leagueTitle, homeTeamName, awayTeamName, homeT
         getResultsBetText(betData.p1ByBet, chanceHomeWin, p1, homeTeamName) + "\n" +
         getResultsBetText(betData.friendshipByBet, chanceFrienshipWin, p0) + "\n" +
         getResultsBetText(betData.p2ByBet, chanceAwayWin, p2, awayTeamName) + "\n" +
+        getDescriptionText(homeTeamName, awayTeamName, chanceFrienshipWin, chanceHomeWin, chanceAwayWin, betData)+ "\n" +
         getBounsText(bothScore, notBothScore) + "\n" +
         probableScoreText;
 
@@ -38,6 +39,16 @@ function getTeamsxG90Text(teamName, teamxG, xGDiff) {
     (xGDiff > 0.5 ? CONSTANTS.EMOJI.WIN + CONSTANTS.EMOJI.WIN + CONSTANTS.EMOJI.WIN :
     xGDiff > 0 ? CONSTANTS.EMOJI.WIN : xGDiff == 0 ? CONSTANTS.EMOJI.DRAW :
     CONSTANTS.EMOJI.LOOSE);
+}
+
+function getDescriptionText(homeTeamName, awayTeamName, chanceFrienshipWin, homeChance, awayChance, betData) {
+    return "Детализация: " + "\n" +
+    "Вероятности: " + "\n" +
+    "Победа " + homeTeamName + ": " + homeChance + "%" + "\n" +
+    "Ничья " + ": " + chanceFrienshipWin + "%" + "\n" +
+    "Победа " + awayTeamName + ": " + awayChance + "%" + "\n" +
+    "Коэффиценты букмекеров: " + "\n" +
+    betData.p1ByBet + " | " + betData.friendshipByBet + " | " + betData.p2ByBet;
 }
 
 function getResultsBetText(pByBet, chanceWin, p, teamName = "") {
