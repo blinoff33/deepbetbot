@@ -12,13 +12,22 @@ export default class ChoiceTeams extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            selectedOption: null
+        }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.teams !== this.props.teams) {
+            this.setState({selectedOption: null});
+        };
+        return true;
     }
 
     onChangeTeam = (selectedOption) => {
         let teamsCode = selectedOption.value;
         let team = this.props.teams.find(team => team.code == teamsCode);
-
-        this.props.onChangeTeam(team);
+        this.setState({ selectedOption }, () => this.props.onChangeTeam(team) );
     };
 
     getTeamsSelectOptions = () => {
@@ -35,7 +44,8 @@ export default class ChoiceTeams extends Component {
     render() {
 
         return (<div className="default-margin">
-             <Select
+            <Select
+                value={this.state.selectedOption}
                 options={this.getTeamsSelectOptions()}
                 placeholder={this.props.choiceTitle}
                 onChange={this.onChangeTeam}

@@ -84,6 +84,13 @@ export const CONSTANTS = {
         SOON: "➡",
         BALL: "⚽",
         GATE: "🔒",
-        CUBE: "🎲"
+        CUBE: "🎲",
+        TO_LEFT_HAND: "👈",
+        TO_RIGHT_HAND: "👉",
+        BONUS: "🎰",
+        DETAIL: "🔎",
+        CALC: "📊",
+        OFFICE: "📠",
+        MONEY: "💰"
     }
 }

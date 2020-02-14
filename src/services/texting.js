@@ -25,7 +25,8 @@ export function getTextForCopying(leagueTitle, homeTeamName, awayTeamName, homeT
         getResultsBetText(betData.p2ByBet, chanceAwayWin, p2, awayTeamName) + "\n" +
         getDescriptionText(homeTeamName, awayTeamName, chanceFrienshipWin, chanceHomeWin, chanceAwayWin, betData)+ "\n" +
         getBounsText(bothScore, notBothScore) + "\n" +
-        probableScoreText;
+        probableScoreText +
+        CONSTANTS.EMOJI.MONEY;
 
     return text;
 }
@@ -42,13 +43,13 @@ function getTeamsxG90Text(teamName, teamxG, xGDiff) {
 }
 
 function getDescriptionText(homeTeamName, awayTeamName, chanceFrienshipWin, homeChance, awayChance, betData) {
-    return "Детализация: " + "\n" +
-    "Вероятности: " + "\n" +
+    return "Детализация:" + CONSTANTS.EMOJI.DETAIL + "\n" +
+    "Вероятности: " + CONSTANTS.EMOJI.CALC + "\n" +
     "Победа " + homeTeamName + ": " + homeChance + "%" + "\n" +
-    "Ничья " + ": " + chanceFrienshipWin + "%" + "\n" +
+    "Ничья" + ": " + chanceFrienshipWin + "%" + "\n" +
     "Победа " + awayTeamName + ": " + awayChance + "%" + "\n" +
-    "Коэффиценты букмекеров: " + "\n" +
-    betData.p1ByBet + " | " + betData.friendshipByBet + " | " + betData.p2ByBet;
+    "Коэффиценты букмекеров:" + CONSTANTS.EMOJI.OFFICE + "\n" +
+    betData.p1ByBet + CONSTANTS.EMOJI.TO_LEFT_HAND + betData.friendshipByBet +  CONSTANTS.EMOJI.TO_RIGHT_HAND + betData.p2ByBet;
 }
 
 function getResultsBetText(pByBet, chanceWin, p, teamName = "") {
@@ -60,8 +61,8 @@ function getResultsBetText(pByBet, chanceWin, p, teamName = "") {
 }
 
 function getBounsText(bothScore, notBothScore) {
-    return "Бонус" + "\n" +
-    "Обе забьют:" + "\n" +
-    "Да: " + bothScore + "% " + CONSTANTS.EMOJI.BALL + (bothScore > 60 ? CONSTANTS.EMOJI.GOOD_BET : "") + "\n" +
-    "Нет: " + notBothScore + "% " + CONSTANTS.EMOJI.GATE + (notBothScore > 60 ? CONSTANTS.EMOJI.GOOD_BET : "");
+    return "Бонус" + CONSTANTS.EMOJI.BONUS + "\n" +
+    "Обе забьют:" + (bothScore > notBothScore ? CONSTANTS.EMOJI.BALL : CONSTANTS.EMOJI.GATE) + "\n" +
+    "Да: " + bothScore + "% " + (bothScore > 60 ? CONSTANTS.EMOJI.GOOD_BET : "") + "\n" +
+    "Нет: " + notBothScore + "% " + (notBothScore > 60 ? CONSTANTS.EMOJI.GOOD_BET : "");
 }

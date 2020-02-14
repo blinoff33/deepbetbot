@@ -168,7 +168,8 @@ class App extends Component {
                             InputLabelProps={{
                                 shrink: true
                             }}
-                            variant="outlined" />
+                            variant="outlined" 
+                            disabled={this.state.loading}/>
                     </div>
                     <div className="button-wrapper default-margin">
                         <TextField
@@ -180,7 +181,8 @@ class App extends Component {
                             InputLabelProps={{
                                 shrink: true
                             }}
-                            variant="outlined" />
+                            variant="outlined" 
+                            disabled={this.state.loading}/>
                     </div>
                     <div className="button-wrapper default-margin">
                         <TextField
@@ -192,7 +194,8 @@ class App extends Component {
                             InputLabelProps={{
                                 shrink: true
                             }}
-                            variant="outlined" />
+                            variant="outlined" 
+                            disabled={this.state.loading}/>
                     </div>
 
                 </div>
