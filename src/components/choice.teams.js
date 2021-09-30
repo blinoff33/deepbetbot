@@ -12,6 +12,7 @@ export default class ChoiceTeams extends Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
             selectedOption: null
         }

@@ -5,6 +5,23 @@
  Description	:	Парсинг статистики лиги и списка команд
  =============================================================== */
 import $ from "jquery";
+export function parseAllData(response) {
+  var res = [];
+  var container = document.implementation.createHTMLDocument().documentElement;
+        container.innerHTML = response.data;
+
+    var tournament = container.querySelectorAll('[data-type="tournament"]');
+
+    tournament.forEach(t => {
+        var title = t.innerText.replace(/\n/g, " ").split(' ').join(''); 
+        var dataLink = t.getAttribute('data-link');
+
+        res.push({ code: 0, title: title, type: "", dataLink: dataLink });
+    })
+
+    return res;
+}
+
 
 export function parseLeaguesData(response) {
     //команды лиги

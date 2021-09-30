@@ -7,7 +7,7 @@
 
 export const CONSTANTS = {
     LEAGUES: [
-        { code: 3953, title: "Россия. Премьер-Лига. Сезон 2020/2021 🇷🇺 🇷🇺 🇷🇺", type: "_russiapl" },
+        { code: 4465, title: "Россия. Премьер-Лига. Сезон 2021/2022 🇷🇺 🇷🇺 🇷🇺", type: "_russiapl" },
 
         { code: 2995, title: "Англия. Премьер-лига. Сезон 2019/2020 🇬🇧", type: "_england" },
         { code: 3051, title: "Англия. Чемпионшип. Сезон 2019/2020 🇬🇧", type: "_england" },
@@ -69,6 +69,7 @@ export const CONSTANTS = {
     ],
     URL_FOR_CORS: "https://cors-anywhere.herokuapp.com/",
     URL_FOR_DATA_SOURCE: "https://www.championat.com/football/",
+    URL_FOR_DATA_SOURCE_CHAMP_ONLY: "https://www.championat.com",
     MAX_GOALS_COUNT: 6,
     CHANCE_CEILING: 3.5,
     HOME_CHART_COLOR: "#c23531",

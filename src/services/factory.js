@@ -8,6 +8,13 @@ import { CONSTANTS } from './constants';
 
 import axios from 'axios';
 
+export function getAlldata() {
+    let url = CONSTANTS.URL_FOR_CORS  + 'https://www.championat.com/stat/football/tournaments/377/domestic/';
+
+    return getDataByUrl(url);
+};
+
+
 export function getPrevResultsData(league, team) {
     var url = getPathToLeaguePage(league) + '/teams/' + team.code + '/result/';
 
@@ -28,7 +35,9 @@ export function getTeamsData(league, team) {
 
 
 function getPathToLeaguePage(league) {
-    return CONSTANTS.URL_FOR_CORS + CONSTANTS.URL_FOR_DATA_SOURCE + league.type + '/tournament/' + league.code;
+    return (league.dataLink && league.dataLink.length > 0) ?
+        (CONSTANTS.URL_FOR_CORS + CONSTANTS.URL_FOR_DATA_SOURCE_CHAMP_ONLY + league.URL_FOR_DATA_SOURCE_CHAMP_ONLY) :
+        CONSTANTS.URL_FOR_CORS + CONSTANTS.URL_FOR_DATA_SOURCE + league.type + '/tournament/' + league.code;
 }
 
 function getDataByUrl(url) {
