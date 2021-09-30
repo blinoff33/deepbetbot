@@ -20,9 +20,10 @@ export function getTextForCopying(leagueTitle, homeTeamName, awayTeamName, homeT
     var text = getTitleText(leagueTitle) + "\n" +
         getTeamsxG90Text(homeTeamName, homeTeamXG, xGDiff) + "\n" +
         getTeamsxG90Text(awayTeamName, awayTeamXG, -xGDiff) + "\n" +
-        getResultsBetText(betData.p1ByBet, chanceHomeWin, p1, homeTeamName) + "\n" +
-        getResultsBetText(betData.friendshipByBet, chanceFrienshipWin, p0) + "\n" +
-        getResultsBetText(betData.p2ByBet, chanceAwayWin, p2, awayTeamName) + "\n" +
+        "\n" +
+        // getResultsBetText(betData.p1ByBet, chanceHomeWin, p1, homeTeamName) + "\n" +
+        // getResultsBetText(betData.friendshipByBet, chanceFrienshipWin, p0) + "\n" +
+        // getResultsBetText(betData.p2ByBet, chanceAwayWin, p2, awayTeamName) + "\n" +
         getDescriptionText(homeTeamName, awayTeamName, chanceFrienshipWin, chanceHomeWin, chanceAwayWin, betData)+ "\n" +
         getBounsText(bothScore, notBothScore) + "\n" +
         probableScoreText +
@@ -47,9 +48,11 @@ function getDescriptionText(homeTeamName, awayTeamName, chanceFrienshipWin, home
     "Вероятности: " + CONSTANTS.EMOJI.CALC + "\n" +
     "Победа " + homeTeamName + ": " + homeChance + "%" + "\n" +
     "Ничья" + ": " + chanceFrienshipWin + "%" + "\n" +
-    "Победа " + awayTeamName + ": " + awayChance + "%" + "\n" +
-    "Коэффиценты букмекеров:" + CONSTANTS.EMOJI.OFFICE + "\n" +
-    betData.p1ByBet + CONSTANTS.EMOJI.TO_LEFT_HAND + betData.friendshipByBet +  CONSTANTS.EMOJI.TO_RIGHT_HAND + betData.p2ByBet;
+    "Победа " + awayTeamName + ": " + awayChance + "%" + "\n" + "\n";
+    //"Коэффиценты букмекеров:" + CONSTANTS.EMOJI.OFFICE + "\n" +
+   // + "\n"
+    //betData.p1ByBet + CONSTANTS.EMOJI.TO_LEFT_HAND + betData.friendshipByBet +  CONSTANTS.EMOJI.TO_RIGHT_HAND + betData.p2ByBet
+    
 }
 
 function getResultsBetText(pByBet, chanceWin, p, teamName = "") {

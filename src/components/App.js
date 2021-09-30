@@ -37,8 +37,12 @@ class App extends Component {
         };
 
     }
-    showPoster = false;
+    showPoster = true;
     showGraphs = true;
+
+    setLoading = (isLoading) => {
+        this.setState({ loading: isLoading });
+    }
 
     //задает лигу
     setLeaguesData = (league) => {
@@ -154,7 +158,7 @@ class App extends Component {
                 </Backdrop>
 
                 <div className="control">
-                     <ChoiceLeagues setLeague={this.setLeaguesData} choiceTitle="Choose League" loading={this.state.loading} />
+                     <ChoiceLeagues setLeague={this.setLeaguesData} setLoading={this.setLoading} choiceTitle="Choose League" loading={this.state.loading} />
                     <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Home Team" onChangeTeam={this.onChangeHomeTeam} loading={this.state.loading} />
                     <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Away Team" onChangeTeam={this.onChangeAwayTeam} loading={this.state.loading} />
 

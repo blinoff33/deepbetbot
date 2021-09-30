@@ -20,8 +20,7 @@ export default class ChoiceLeagues extends Component {
         }
      }
     componentDidMount = () => {
-        this.setState({ LEAGUES: CONSTANTS.LEAGUES })
-
+        this.props.setLoading(true);
         getAlldata().then(response => {
             if (!response || !response.data) {
                 alert('Ошибка получения данных');
@@ -31,14 +30,16 @@ export default class ChoiceLeagues extends Component {
 
             var LEAGUES = parseAllData(response);
 
-            this.setState({ LEAGUES: LEAGUES })
+            this.setState({ LEAGUES: LEAGUES });
+            console.log('success');
+            this.props.setLoading(false);
         });
     }
 
     onChangeLeague = (selectedOption) => {
         let leaguesCode = selectedOption.value;
         let league = this.state.LEAGUES.find(league => league.code == leaguesCode);
-
+        console.log(league);
         this.props.setLeague(league);
     };
 

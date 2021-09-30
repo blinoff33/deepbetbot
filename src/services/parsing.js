@@ -13,10 +13,19 @@ export function parseAllData(response) {
     var tournament = container.querySelectorAll('[data-type="tournament"]');
 
     tournament.forEach(t => {
-        var title = t.innerText.replace(/\n/g, " ").split(' ').join(''); 
         var dataLink = t.getAttribute('data-link');
 
-        res.push({ code: 0, title: title, type: "", dataLink: dataLink });
+        var code = t.getAttribute('data-id');
+        code = code.split('-');
+        code = code && code.length > 1 ? code[1] : 0;
+
+        var type = dataLink;
+        type = type.split('/');
+        type = type && type.length > 2 ? type[2] : '';
+
+        var title = t.innerText.replace(/\n/g, " ").split(' ').join(''); 
+
+        res.push({ code: code, title: title, type: type, dataLink: dataLink });
     })
 
     return res;
@@ -110,7 +119,7 @@ export function parsePrevResultsData(response) {
 function getTeamsLogo(response) {
     var logo = "";
 
-    $(response).find(".tournament-header__img").first().text(function () {
+    $(response).find(".entity-header__img").first().text(function () {
         logo = $(this).find('img').attr('src');
     });
 

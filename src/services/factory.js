@@ -35,9 +35,11 @@ export function getTeamsData(league, team) {
 
 
 function getPathToLeaguePage(league) {
-    return (league.dataLink && league.dataLink.length > 0) ?
-        (CONSTANTS.URL_FOR_CORS + CONSTANTS.URL_FOR_DATA_SOURCE_CHAMP_ONLY + league.URL_FOR_DATA_SOURCE_CHAMP_ONLY) :
-        CONSTANTS.URL_FOR_CORS + CONSTANTS.URL_FOR_DATA_SOURCE + league.type + '/tournament/' + league.code;
+    let url = (league.dataLink && league.dataLink.length > 0) ?
+        (CONSTANTS.URL_FOR_CORS + CONSTANTS.URL_FOR_DATA_SOURCE_CHAMP_ONLY + league.dataLink) :
+        (CONSTANTS.URL_FOR_CORS + CONSTANTS.URL_FOR_DATA_SOURCE + league.type + '/tournament/' + league.code);
+
+        return url;
 }
 
 function getDataByUrl(url) {

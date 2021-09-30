@@ -18,7 +18,7 @@ export default class ResultsTable extends Component {
   }
 
   getTextProbableScore(results) {
-    var text = "Вероятные счета:"  + CONSTANTS.EMOJI.CUBE + "\n";
+    var text =  "\n" + "Вероятные счета:"  + CONSTANTS.EMOJI.CUBE + "\n";
     if (results && results.totalChanceMatrix)
       results.totalChanceMatrix.sort(this.compareByChance).filter(this.filterByChance).map((x) => (
         text += x.goalsHome + ":" + x.goalsaway + " Вероятность: " + x.chance + "%" + "\n"

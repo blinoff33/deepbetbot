@@ -12,6 +12,7 @@ export default class Poster extends Component {
 
     constructor(props) {
         super(props);
+        console.log('poster')
     }
 
     getStyle = (logoUrl) => {
