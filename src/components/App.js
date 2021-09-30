@@ -154,10 +154,34 @@ class App extends Component {
                 </Backdrop>
 
                 <div className="control">
-                    <ChoiceLeagues setLeague={this.setLeaguesData} choiceTitle="Choose League" loading={this.state.loading} />
+                     <ChoiceLeagues setLeague={this.setLeaguesData} choiceTitle="Choose League" loading={this.state.loading} />
                     <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Home Team" onChangeTeam={this.onChangeHomeTeam} loading={this.state.loading} />
                     <ChoiceTeams teams={this.state.leaguesData.teams} choiceTitle="Choose Away Team" onChangeTeam={this.onChangeAwayTeam} loading={this.state.loading} />
 
+<div className="button-wrapper default-margin">
+                        <TextField
+                            id="55"
+                            label="K1"
+                            value={this.state.betData.p1ByBet}
+                            onChange={(e) => this._handlePByBetChange(e, "p1ByBet")}
+                            InputLabelProps={{
+                                shrink: true
+                            }}
+                            variant="outlined" 
+                            disabled={this.state.loading}/>
+                    </div>
+                    <div className="button-wrapper default-margin">
+                        <TextField
+                            id="66"
+                            label="K2"
+                            value={this.state.betData.p1ByBet}
+                            onChange={(e) => this._handlePByBetChange(e, "p1ByBet")}
+                            InputLabelProps={{
+                                shrink: true
+                            }}
+                            variant="outlined" 
+                            disabled={this.state.loading}/>
+                    </div>
                     <div className="button-wrapper default-margin">
                         <TextField
                             id="2"
